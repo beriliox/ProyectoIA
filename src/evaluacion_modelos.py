@@ -16,9 +16,20 @@ def evaluar_modelo(nombre_modelo, pregunta, precio_entrada, precio_salida, repet
 
     for i in range(1, repeticiones + 1):
         print(f"\n--- Intento {i} de {repeticiones} ({nombre_modelo}) ---")
+
+        response_schema = {
+            "type": "OBJECT",
+            "properties": {
+                "categoria": {"type": "STRING"},
+                "nivel": {"type": "NUMBER"}
+            },
+            "required": ["categoria", "nivel"]
+        }
+
+        system_instruction = "Eres un asistente amigable y respondes en máximo 2 palabras."
         
         # 1. Armar petición (puedes pasar el modelo si tu función lo requiere)
-        url, body = consumir_gemini.armar_peticion(pregunta, nombre_modelo) 
+        url, body = consumir_gemini.armar_peticion(nombre_modelo, pregunta, system_instruction, response_schema)
 
         # 2. Medir latencia
         inicio = time.perf_counter()
