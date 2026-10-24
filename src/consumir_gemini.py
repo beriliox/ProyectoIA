@@ -2,6 +2,8 @@ import os
 import requests
 from dotenv import load_dotenv
 
+import time
+
 load_dotenv()
 
 # CONSTANTES
@@ -10,10 +12,10 @@ URL_BASE = "https://generativelanguage.googleapis.com/v1beta/models/"
 API_KEY = os.getenv("API_KEY")
 
 #función para crear la solicitud
-def armar_peticion(pregunta): #pregunta = "Confirma la conexion"
+def armar_peticion(pregunta, modelo): #pregunta = "Confirma la conexion"
     if not pregunta:
       raise ValueError("La pregunta no puede estar vacía")
-    url = f"{URL_BASE}{MODELO}:generateContent?key={API_KEY}" #url = "https://generativelanguage.googleapis.com/v1beta/models/gemini-3.6-flash:generateContent?key=MI API KEY"
+    url = f"{URL_BASE}{modelo}:generateContent?key={API_KEY}" #url = "https://generativelanguage.googleapis.com/v1beta/models/gemini-3.6-flash:generateContent?key=MI API KEY"
     body = {
         "contents": 
             [{"parts": [{"text": pregunta}]}]
@@ -44,10 +46,16 @@ def extraer_texto(datos): #Gemini
     raise RuntimeError("Error al extraer el texto de la respuesta. La estructura de datos recibida no es la esperada.")
 
 def obtener_dato_de_prueba(pregunta): #pregunta = "Confirma la conexion"
-    url, body = armar_peticion(pregunta) #obtiene url y body
+    url, body = armar_peticion(pregunta, "gemini-3.6-flash") #obtiene url y body
+    inicio = time.perf_counter() #Empezar el contador
     #url = resultado de armar_peticion
     #body = resultado de armar_peticion
     datos = enviar_peticion(url, body)
+
+    fin = time.perf_counter() #Termina el contador
+    latencia = fin - inicio
+    print(f"Latencia: {latencia:.2f} segundos")
+
     costo = calcular_costo(datos, 0.00000075, 0.00000375)
     print(f"Costo de la petición: ${costo:.6f} USD")
     return extraer_texto(datos)
@@ -59,8 +67,7 @@ def calcular_costo(datos, precio_entrada, precio_salida):
 
   tokens_entrada = uso["promptTokenCount"]
   tokens_salida = uso["candidatesTokenCount"]
-  tokens_razonamiento = uso["thoughtsTokenCount"]
-
+  tokens_razonamiento = uso.get("thoughtsTokenCount", 0)
   costo = (tokens_entrada * precio_entrada) + ((tokens_salida + tokens_razonamiento) * precio_salida)
   return costo
 
