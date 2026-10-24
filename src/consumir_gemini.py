@@ -11,6 +11,8 @@ API_KEY = os.getenv("API_KEY")
 
 #función para crear la solicitud
 def armar_peticion(pregunta): #pregunta = "Confirma la conexion"
+    if not pregunta:
+      raise ValueError("La pregunta no puede estar vacía")
     url = f"{URL_BASE}{MODELO}:generateContent?key={API_KEY}" #url = "https://generativelanguage.googleapis.com/v1beta/models/gemini-3.6-flash:generateContent?key=MI API KEY"
     body = {
         "contents": 
@@ -20,12 +22,26 @@ def armar_peticion(pregunta): #pregunta = "Confirma la conexion"
 
 #función envía la petición
 def enviar_peticion(url, body):
-    respuesta = requests.post(url, json=body)
-    return respuesta.json()
+  try:
+    respuesta = requests.post(url, json=body, timeout=30)
+  except requests.exceptions.ConnectionError:
+    raise RuntimeError("Error de conexión. Por favor, verifica tu conexión a Internet.")
+  except requests.exceptions.Timeout:
+    raise RuntimeError("La solicitud ha excedido el tiempo de espera. Intenta nuevamente más tarde.")
 
-#funcion procesa y extrae dato
+  if respuesta.status_code != 200:
+    raise RuntimeError(f"Error en la solicitud: {respuesta.status_code}")
+
+  try:
+    return respuesta.json()
+  except requests.exceptions.JSONDecodeError:
+    raise RuntimeError("Error al decodificar la respuesta JSON. La respuesta recibida no es válida.")
+
 def extraer_texto(datos): #Gemini
+  try:
     return datos["candidates"][0]["content"]["parts"][0]["text"]
+  except (KeyError, IndexError):
+    raise RuntimeError("Error al extraer el texto de la respuesta. La estructura de datos recibida no es la esperada.")
 
 def obtener_dato_de_prueba(pregunta): #pregunta = "Confirma la conexion"
     url, body = armar_peticion(pregunta) #obtiene url y body
@@ -34,4 +50,8 @@ def obtener_dato_de_prueba(pregunta): #pregunta = "Confirma la conexion"
     datos = enviar_peticion(url, body)
     return extraer_texto(datos)
 
-print(obtener_dato_de_prueba("Confirma en una frase corta que esta conexión funciona"))
+try:
+  resultado = obtener_dato_de_prueba("Confirma en una frase corta que esta conexión funciona")
+  print(resultado)
+except (ValueError, RuntimeError) as error:
+  print(f"Se produjo un error: {error}")
