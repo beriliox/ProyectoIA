@@ -1,0 +1,14 @@
+{
+  "evaluar_orientacion_ciudadana": {
+    "exitos": 3,
+    "intentos": 3
+  },
+  "extraer_datos_ciudadano": {
+    "exitos": 3,
+    "intentos": 3
+  },
+  "enrutador_agente_intentos": {
+    "exitos": 3,
+    "intentos": 3
+  }
+}
