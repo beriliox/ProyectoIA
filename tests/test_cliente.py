@@ -2,8 +2,7 @@ from unittest.mock import patch, Mock
 
 import pytest
 
-import cliente
-from cliente import con_reintento, registrar_costo, consultar_modelo
+from src import cliente
 from src.consumir_gemini import enviar_peticion
 
 
@@ -41,9 +40,9 @@ def test_enviar_peticion_exito():
 def test_con_reintento_no_reintenta_value_error():
     funcion = Mock(side_effect=ValueError("credencial inválida"))
 
-    with patch("cliente.time.sleep") as mock_sleep:
+    with patch("src.cliente.time.sleep") as mock_sleep:
         with pytest.raises(ValueError):
-            con_reintento(funcion)
+            cliente.con_reintento(funcion)
 
     funcion.assert_called_once()
     mock_sleep.assert_not_called()
@@ -52,7 +51,7 @@ def test_con_reintento_agota_intentos():
     def siempre_falla():
         raise TimeoutError("simulado")
     
-    with patch("cliente.time.sleep"):
+    with patch("src.cliente.time.sleep"):
         with pytest.raises(TimeoutError):
           cliente.con_reintento(siempre_falla, intentos=3)
 
@@ -76,6 +75,6 @@ def test_registrar_costo_acumula():
 def test_consultar_modelo_convierte_error():
     error_simulado = TimeoutError("simulado")
 
-    with patch("cliente.con_reintento", side_effect=error_simulado):
+    with patch("src.cliente.con_reintento", side_effect=error_simulado):
         with pytest.raises(RuntimeError):
-            consultar_modelo("pregunta de prueba")
+            cliente.consultar_modelo("pregunta de prueba")

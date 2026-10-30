@@ -2,9 +2,9 @@ import time
 import random
 from typing import Callable, Any
 
-from src.consumir_gemini import armar_peticion, enviar_peticion, extraer_texto
+from consumir_gemini import armar_peticion, enviar_peticion, extraer_texto
 
-MODELO = "gemini-3.6-flash"
+MODELO = "gemini-3.5-flash"
 
 #def con_reintento(): #funcion, intentos
   #iterar cantidad de intentos
@@ -51,7 +51,7 @@ def consultar_modelo(
 	registrar_costo(respuesta)
 	return extraer_texto(respuesta)
  
-#Cómo ejecuto esto?
+# #Cómo ejecuto esto?
 if __name__ == "__main__":
 	resultado = consultar_modelo("¿Cuál es la capital de Chile?", " ")
 	print(resultado)

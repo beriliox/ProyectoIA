@@ -95,8 +95,9 @@ Todos los comandos se ejecutan desde la raíz del repositorio.
 |---|---|
 | `python src/consumir_gemini.py` | Petición de prueba a Gemini con `response_schema`; imprime latencia, costo y el JSON parseado. |
 | `python src/evaluacion_modelos.py` | Benchmark de 3 modelos Gemini (4 repeticiones c/u): latencia por intento, latencia promedio y costo acumulado. |
-| `python src/consistencia.py` | Ejecuta cada prompt de `src/prompts/banco.py` 3 veces, valida que la respuesta tenga las claves esperadas y guarda el resultado en `src/prompts/registro_resultados.json`. |
-| `python cliente.py` | Envía una petición con reintentos (`con_reintento`) ante límite de uso (429) o errores del servidor (5xx). |
+| `python src/consistencia.py` | Ejecuta cada prompt de `src/prompts/banco.py` 3 veces, valida que la respuesta tenga las claves esperadas y guarda el resultado en `docs/registro_resultados.json`. |
+| `python src/precision.py` | Calcula precisión, recall y F1 por consulta y guarda los resultados en `docs/resultados_metricas.json`. |
+| `python src/cliente.py` | Envía una petición con reintentos (`con_reintento`) ante límite de uso (429) o errores del servidor (5xx). |
 
 ## Estructura de carpetas
 
@@ -105,14 +106,17 @@ Todos los comandos se ejecutan desde la raíz del repositorio.
   - `evaluacion_modelos.py` : comparación de latencia y costo entre `gemini-3.6-flash`, `gemini-3.5-flash-lite` y `gemini-3.1-flash-lite`.
   - `consistencia.py` : prueba de consistencia de las respuestas estructuradas (JSON).
   - `prompts/banco.py` : banco de prompts (`evaluar_orientacion_ciudadana`, `extraer_datos_ciudadano`, `enrutador_agente_intentos`), cada uno con su `system_instruction`, ejemplo de usuario, claves esperadas y `response_schema`.
-  - `prompts/registro_resultados.json` : resultados de la última corrida de consistencia.
   - `prompts/respuestas.md` : respuestas de ejemplo obtenidas por cada prompt.
-- `cliente.py` : ejemplo de petición con reintentos.
+  - `cliente.py` : ejemplo de petición con reintentos.
+  - `precision.py` : métricas de precisión, recall y F1.
 - `docs/` : documentación técnica.
   - `decision-arquitectura.md` : comparación de modelos y justificación de la elección.
   - `diagrama_arquitectura.png` : diagrama de arquitectura.
   - `evidencia_peticion_autenticada.png` : evidencia de una petición autenticada exitosa.
-- `tests/` : pruebas (pendiente).
+  - `registro_resultados.json` : resultados de la última corrida de consistencia.
+  - `resultados_metricas.json` : métricas de precisión por consulta.
+  - `clase_2026-10-27_cliente_y_pruebas.md` : apuntes de la clase sobre cliente y pruebas.
+- `tests/` : pruebas unitarias (`test_cliente.py`, `test_pipeline.py`).
 - `requirements.txt` : dependencias de Python (`requests`, `python-dotenv`, `google-genai`, `tenacity`, entre otras).
 - `.env.example` : plantilla de variables de entorno (`API_KEY`), sin valores reales.
 - `.gitignore` : excluye el entorno virtual y el archivo `.env`.

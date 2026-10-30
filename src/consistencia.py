@@ -26,8 +26,8 @@ try:
       "exitos": exitos,
       "intentos": intentos,
     }
-  # Cuando termine de recorrer los prompts quiero guardar esa info en registro_resultados.json
-  with open("src/prompts/registro_resultados.json", "w", encoding="utf-8") as archivo:
+  # Cuando termine de recorrer los prompts quiero guardar esa info en docs/registro_resultados.json
+  with open("docs/registro_resultados.json", "w", encoding="utf-8") as archivo:
     json.dump(registro, archivo, indent=2, ensure_ascii=False)
 
 except (ValueError, RuntimeError) as e:
