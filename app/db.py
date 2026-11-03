@@ -8,7 +8,7 @@ from dotenv import load_dotenv
 
 load_dotenv()
 
-RUTA_DB = os.getenv("RUTA_DB", "datos/app.db")
+RUTA_DB = os.getenv("RUTA_DB", "app/app.db")
 ESQUEMA = Path(__file__).with_name("schema.sql")
 
 
