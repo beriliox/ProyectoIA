@@ -22,3 +22,6 @@ Thumbs.db
 
 # Texto del curso extraído (contiene URLs firmadas)
 .playwright-mcp/
+
+# Base de datos local (contiene datos personales)
+datos/
