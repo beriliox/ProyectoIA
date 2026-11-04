@@ -73,11 +73,14 @@ for consulta, referencia in casos:
     metricas = calcular_metricas(referencia, respuesta)
     
     print("Consulta:", consulta)
+    print("Referencia:", referencia)
     print("Respuesta:", respuesta)
     print("Métricas:", metricas)
     
     resultados.append({
+        "id": len(resultados) + 1,
         "consulta": consulta,
+        "referencia": referencia,
         "respuesta": respuesta,
         **metricas,
     })
