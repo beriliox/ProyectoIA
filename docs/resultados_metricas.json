@@ -1,23 +1,182 @@
 [
   {
-    "consulta": "¿Cuándo se creó Python?",
-    "respuesta": "Python fue creado por Guido van Rossum y lanzado oficialmente en febrero de 1991.",
-    "precision": 0.35714285714285715,
-    "cobertura": 1.0,
-    "f1": 0.5263157894736842
+    "id": 5,
+    "consulta": "¿Quiénes pertenecen al tramo D de Fonasa?",
+    "referencia": "Las personas con un ingreso imponible mensual mayor a $808.188.",
+    "respuesta": "El tramo D de Fonasa pertenece a los afiliados cuyos ingresos mensuales superan el límite de los tramos anteriores, pagando un copago del 20%.",
+    "precision": 0.08333333333333333,
+    "cobertura": 0.2,
+    "f1": 0.11764705882352941
   },
   {
-    "consulta": "¿Qué es una lista en Python?",
-    "respuesta": "Una lista en Python es una colección ordenada y mutable que almacena diversos elementos.",
+    "id": 8,
+    "consulta": "¿Qué necesito para ingresar al Registro Social de Hogares?",
+    "referencia": "Se requiere cédula de identidad vigente y se solicita con ClaveÚnica en línea, en el municipio o en ChileAtiende.",
+    "respuesta": "Necesitas tu cédula de identidad vigente y algún documento que acredite tu dirección, como una boleta de servicios básicos.",
+    "precision": 0.2631578947368421,
+    "cobertura": 0.2631578947368421,
+    "f1": 0.2631578947368421
+  },
+  {
+    "id": 1,
+    "consulta": "¿Cuánto se paga por las cargas familiares en Fonasa?",
+    "referencia": "Las cargas familiares no pagan extra; con el 7% de cotización están cubiertas.",
+    "respuesta": "Las cargas familiares en Fonasa son totalmente gratuitas y no generan ningún cobro adicional a la cotización mensual del titular.",
+    "precision": 0.25,
+    "cobertura": 0.38461538461538464,
+    "f1": 0.30303030303030304
+  },
+  {
+    "id": 4,
+    "consulta": "¿Quiénes pertenecen al tramo C de Fonasa?",
+    "referencia": "Las personas con un ingreso imponible mensual desde $553.554 y menor o igual a $808.187.",
+    "respuesta": "Pertenecen al tramo C los trabajadores con un ingreso imponible mensual entre $500.000 y $730.000, o superior si tienen tres o más cargas familiares.",
+    "precision": 0.2916666666666667,
+    "cobertura": 0.4666666666666667,
+    "f1": 0.35897435897435903
+  },
+  {
+    "id": 1,
+    "consulta": "¿Quiénes pueden ser beneficiarios de Fonasa?",
+    "referencia": "Fonasa incorpora a todas las personas que viven en Chile, sin importar edad, ingresos, enfermedades preexistentes ni nacionalidad.",
+    "respuesta": "Pueden ser beneficiarios de Fonasa todas las personas residentes en Chile y sus cargas legales que no estén afiliadas a otra previsión de salud.",
+    "precision": 0.3333333333333333,
+    "cobertura": 0.4444444444444444,
+    "f1": 0.380952380952381
+  },
+  {
+    "id": 2,
+    "consulta": "¿Qué es el Copago Cero de Fonasa?",
+    "referencia": "Desde septiembre de 2022 las atenciones en la red pública, Modalidad de Atención Institucional, no tienen copago para ningún tramo.",
+    "respuesta": "Es el beneficio que garantiza la gratuidad total de las atenciones médicas en la red pública de salud para todos los afiliados a Fonasa.",
+    "precision": 0.375,
+    "cobertura": 0.45,
+    "f1": 0.4090909090909091
+  },
+  {
+    "id": 7,
+    "consulta": "¿De qué depende el valor de un bono de Fonasa en libre elección?",
+    "referencia": "El valor del bono depende del médico o centro médico donde te atiendas, no del tramo.",
+    "respuesta": "El valor del bono de Fonasa depende del tramo de afiliación del usuario y del arancel específico de la prestación médica requerida.",
+    "precision": 0.36363636363636365,
+    "cobertura": 0.5,
+    "f1": 0.4210526315789474
+  },
+  {
+    "id": 10,
+    "consulta": "¿Cómo descargo mi Cartola Hogar?",
+    "referencia": "Ingresa a Ventanilla Única Social con tu ClaveÚnica y presiona Descargar mi Cartola Hogar.",
+    "respuesta": "Puedes descargar tu Cartola Hogar ingresando con tu ClaveÚnica al sitio web oficial del Registro Social de Hogares.",
+    "precision": 0.3888888888888889,
+    "cobertura": 0.5,
+    "f1": 0.43750000000000006
+  },
+  {
+    "id": 8,
+    "consulta": "¿Qué considera el Registro Social de Hogares para calcular la calificación socioeconómica?",
+    "referencia": "Considera los ingresos de los últimos 12 meses, el número y características de los integrantes y los bienes o servicios de alto valor.",
+    "respuesta": "Considera los ingresos económicos del hogar, el número y características de sus integrantes, y la información sobre su patrimonio y consumo.",
+    "precision": 0.47619047619047616,
+    "cobertura": 0.43478260869565216,
+    "f1": 0.4545454545454545
+  },
+  {
+    "id": 2,
+    "consulta": "¿Qué porcentaje del sueldo se cotiza en Fonasa?",
+    "referencia": "Se cotiza el 7% del ingreso imponible.",
+    "respuesta": "En Fonasa se cotiza obligatoriamente el 7% del sueldo imponible mensual de cada trabajador dependiente o independiente en Chile.",
+    "precision": 0.3157894736842105,
+    "cobertura": 0.8571428571428571,
+    "f1": 0.46153846153846156
+  },
+  {
+    "id": 6,
+    "consulta": "¿Puede una persona del tramo A comprar bonos de libre elección?",
+    "referencia": "No, el tramo A solo puede atenderse en la red pública, en la Modalidad de Atención Institucional.",
+    "respuesta": "No, los afiliados del tramo A de Fonasa no pueden comprar bonos de libre elección, ya que solo reciben atención gratuita en la red pública.",
+    "precision": 0.4,
+    "cobertura": 0.5882352941176471,
+    "f1": 0.4761904761904762
+  },
+  {
+    "id": 7,
+    "consulta": "¿Qué es el Registro Social de Hogares?",
+    "referencia": "Es un sistema de información que caracteriza socioeconómicamente a la población para apoyar la selección de beneficiarios de programas sociales.",
+    "respuesta": "Es el sistema de información del Estado chileno que determina la clasificación socioeconómica de los hogares para acceder a beneficios sociales.",
+    "precision": 0.47619047619047616,
+    "cobertura": 0.5,
+    "f1": 0.4878048780487805
+  },
+  {
+    "id": 5,
+    "consulta": "¿Qué pasa si estoy en el tramo D de Fonasa y tengo tres cargas familiares?",
+    "referencia": "Con tres o más cargas familiares, una persona del tramo D pasa al tramo C.",
+    "respuesta": "Al registrar tres cargas familiares, pasas automáticamente del tramo D al tramo C, quedando todos cubiertos con Copago Cero en la red pública.",
+    "precision": 0.43478260869565216,
+    "cobertura": 0.6666666666666666,
+    "f1": 0.5263157894736841
+  },
+  {
+    "id": 10,
+    "consulta": "¿Cómo corrijo un dato incorrecto del Estado en mi Registro Social de Hogares?",
+    "referencia": "Con una rectificación, que se hace solo de forma presencial en la oficina del Registro Social de Hogares de tu municipalidad.",
+    "respuesta": "Debes ingresar a la web del Registro Social de Hogares o ir a tu municipalidad para realizar una solicitud de rectificación de datos.",
+    "precision": 0.5217391304347826,
+    "cobertura": 0.5714285714285714,
+    "f1": 0.5454545454545454
+  },
+  {
+    "id": 6,
+    "consulta": "¿Qué tramos de Fonasa pueden comprar bonos en la Modalidad de Libre Elección?",
+    "referencia": "Los tramos B, C y D pueden comprar bonos en prestadores privados en convenio con Fonasa.",
+    "respuesta": "Los afiliados pertenecientes a los tramos B, C y D de Fonasa pueden adquirir bonos en la Modalidad Libre Elección.",
     "precision": 0.5,
-    "cobertura": 0.875,
-    "f1": 0.6363636363636364
+    "cobertura": 0.625,
+    "f1": 0.5555555555555556
   },
   {
-    "consulta": "¿Qué es Python?",
-    "respuesta": "Python es un lenguaje de programación interpretado, multiparadigma y de alto nivel.",
+    "id": 4,
+    "consulta": "¿Quiénes pertenecen al tramo B de Fonasa?",
+    "referencia": "Las personas con un ingreso imponible mensual menor o igual a $553.553.",
+    "respuesta": "El tramo B de Fonasa pertenece a los afiliados con un ingreso imponible mensual igual o menor al salario mínimo.",
+    "precision": 0.45,
+    "cobertura": 0.75,
+    "f1": 0.5625000000000001
+  },
+  {
+    "id": 3,
+    "consulta": "¿Cuántos tramos tiene Fonasa?",
+    "referencia": "Fonasa tiene cuatro tramos, A, B, C y D, según el nivel de ingresos y la vulnerabilidad económica.",
+    "respuesta": "Fonasa tiene cuatro tramos, denominados A, B, C y D, los cuales se asignan según el ingreso mensual y el tamaño del grupo familiar.",
+    "precision": 0.5,
+    "cobertura": 0.6666666666666666,
+    "f1": 0.5714285714285715
+  },
+  {
+    "id": 9,
+    "consulta": "¿Qué se considera un hogar en el Registro Social de Hogares?",
+    "referencia": "Un grupo de personas que residen en una misma vivienda y comparten un presupuesto de alimentación.",
+    "respuesta": "Un hogar en el Registro Social de Hogares es el grupo de personas que viven bajo un mismo techo y comparten presupuesto de alimentación.",
+    "precision": 0.5,
+    "cobertura": 0.75,
+    "f1": 0.6
+  },
+  {
+    "id": 9,
+    "consulta": "¿Qué es la Cartola Hogar?",
+    "referencia": "Es un documento que muestra la información de tu hogar en el Registro Social de Hogares, usada para calcular la calificación socioeconómica.",
+    "respuesta": "La Cartola Hogar es el documento del Registro Social de Hogares que acredita los integrantes y el tramo de calificación socioeconómica de tu hogar.",
     "precision": 0.5833333333333334,
-    "cobertura": 1.0,
-    "f1": 0.7368421052631579
+    "cobertura": 0.6363636363636364,
+    "f1": 0.6086956521739131
+  },
+  {
+    "id": 3,
+    "consulta": "¿Quiénes pertenecen al tramo A de Fonasa?",
+    "referencia": "Las personas carentes de recursos y los causantes de subsidio familiar.",
+    "respuesta": "Al tramo A de Fonasa pertenecen las personas indigentes o carentes de recursos y los beneficiarios del Subsidio Único Familiar.",
+    "precision": 0.5,
+    "cobertura": 0.9090909090909091,
+    "f1": 0.6451612903225806
   }
 ]
