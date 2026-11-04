@@ -75,14 +75,14 @@ Abre `.env` y reemplaza el valor de ejemplo:
 API_KEY=tu_llave_de_gemini
 ```
 
-El código lee esta variable con `python-dotenv` al importar `src/consumir_gemini.py`. El archivo `.env` nunca se sube al repositorio.
+El código lee esta variable con `python-dotenv` al importar `ejemplos/consumir_gemini.py`. El archivo `.env` nunca se sube al repositorio.
 
 ### 5. Verificar que todo funciona
 
 Desde la raíz del repositorio, con el entorno virtual activo:
 
 ```bash
-python src/consumir_gemini.py
+python ejemplos/consumir_gemini.py
 ```
 
 Si la configuración es correcta, verás la latencia, el costo de la petición y una respuesta JSON con las claves `categoria` y `nivel`.
@@ -93,26 +93,46 @@ Todos los comandos se ejecutan desde la raíz del repositorio.
 
 | Comando | Qué hace |
 |---|---|
-| `python src/consumir_gemini.py` | Petición de prueba a Gemini con `response_schema`; imprime latencia, costo y el JSON parseado. |
-| `python src/evaluacion_modelos.py` | Benchmark de 3 modelos Gemini (4 repeticiones c/u): latencia por intento, latencia promedio y costo acumulado. |
-| `python src/consistencia.py` | Ejecuta cada prompt de `src/prompts/banco.py` 3 veces, valida que la respuesta tenga las claves esperadas y guarda el resultado en `src/prompts/registro_resultados.json`. |
-| `python cliente.py` | Envía una petición con reintentos (`con_reintento`) ante límite de uso (429) o errores del servidor (5xx). |
+| `python ejemplos/consumir_gemini.py` | Petición de prueba a Gemini con `response_schema`; imprime latencia, costo y el JSON parseado. |
+| `python ejemplos/evaluacion_modelos.py` | Benchmark de 3 modelos Gemini (4 repeticiones c/u): latencia por intento, latencia promedio y costo acumulado. |
+| `python ejemplos/consistencia.py` | Ejecuta cada prompt de `ejemplos/prompts/banco.py` 3 veces, valida que la respuesta tenga las claves esperadas y guarda el resultado en `ejemplos/prompts/registro_resultados.json`. |
+| `python ejemplos/cliente.py` | Envía una petición con reintentos (`con_reintento`) ante límite de uso (429) o errores del servidor (5xx). |
+
+## Arquitectura de la aplicación (`app/`)
+
+| Capa | Archivo | Qué hace |
+|---|---|---|
+| Integración con el modelo | `app/llm.py` | Petición REST a Gemini con reintentos, errores traducidos y costo; `crear_modelo_langchain()` entrega el mismo modelo como Runnable. |
+| Prompts | `app/prompts.py` | `ORIENTACION` (JSON con `response_schema`), `CLASIFICADOR` y `CONVERSACION`. |
+| Peticiones | `app/peticiones.py` | `atender(consulta)`: clasifica en `normativa`, `reporte` o `conversacional` y ejecuta una sola ruta. La ruta por defecto es `conversacional`. |
+| Respuesta | `app/orientador.py` | Ruta `normativa`: orientación estructurada sobre Fonasa/RSH. |
+| Datos | `app/db.py`, `app/schema.sql` | SQLite con el modelo de `docs/diseno_funcional.md`. |
+| Métricas | `app/procesamiento.py`, `app/evaluacion.py` | Precisión, cobertura y F1 para `evaluacion/correr.py`. |
+
+```bash
+python -m app "¿Cómo cambio de tramo en Fonasa?"   # consulta real
+python -m app.db                                   # crea las tablas
+pytest                                             # pruebas sin llamar al modelo
+```
 
 ## Estructura de carpetas
 
-- `src/` : código fuente.
+- `ejemplos/` : scripts del curso (bloques 1–19) copiados desde `main`; se ejecutan como `python ejemplos/<script>.py`.
+  - `cadena.py`, `cadena_tres_pasos.py`, `demo.py` : cadenas LangChain (`PromptTemplate | modelo | StrOutputParser`).
+  - `enrutamiento.py` : `RunnableBranch` del bloque 19 (modo simulado por defecto, `--real` para Gemini).
+  - `pipeline_*.py`, `precision*.py`, `revision_manual.py` : limpieza de texto y métricas.
   - `consumir_gemini.py` : cliente HTTP para Gemini (`armar_peticion`, `enviar_peticion`, `extraer_texto`, `calcular_costo`, `parsear_respuesta_json`). Traduce los errores HTTP a excepciones: `ValueError` (401/403), `TimeoutError` (429/5xx), `RuntimeError` (conexión, timeout, otros).
   - `evaluacion_modelos.py` : comparación de latencia y costo entre `gemini-3.6-flash`, `gemini-3.5-flash-lite` y `gemini-3.1-flash-lite`.
   - `consistencia.py` : prueba de consistencia de las respuestas estructuradas (JSON).
   - `prompts/banco.py` : banco de prompts (`evaluar_orientacion_ciudadana`, `extraer_datos_ciudadano`, `enrutador_agente_intentos`), cada uno con su `system_instruction`, ejemplo de usuario, claves esperadas y `response_schema`.
   - `prompts/registro_resultados.json` : resultados de la última corrida de consistencia.
   - `prompts/respuestas.md` : respuestas de ejemplo obtenidas por cada prompt.
-- `cliente.py` : ejemplo de petición con reintentos.
+- `app/` : la aplicación (ver "Arquitectura de la aplicación").
 - `docs/` : documentación técnica.
   - `decision-arquitectura.md` : comparación de modelos y justificación de la elección.
   - `diagrama_arquitectura.png` : diagrama de arquitectura.
   - `evidencia_peticion_autenticada.png` : evidencia de una petición autenticada exitosa.
-- `tests/` : pruebas (pendiente).
+- `tests/` : pruebas de `app/` (`pytest`).
 - `requirements.txt` : dependencias de Python (`requests`, `python-dotenv`, `google-genai`, `tenacity`, entre otras).
 - `.env.example` : plantilla de variables de entorno (`API_KEY`), sin valores reales.
 - `.gitignore` : excluye el entorno virtual y el archivo `.env`.

@@ -26,7 +26,24 @@ ORIENTACION = {
     },
 }
 
-# ponytail: aún sin uso en la app; se conecta como tools en los bloques de agentes (B21–23)
+# Capa de peticiones (app/peticiones.py): clasificación en una palabra, patrón del bloque 19.
+
+CLASIFICADOR = (
+    "Clasifica la consulta de un ciudadano chileno en una sola palabra:\n"
+    "- normativa: pregunta sobre beneficios, requisitos o trámites de Fonasa o del Registro Social de Hogares.\n"
+    "- reporte: pide un resumen o reporte de sus trámites.\n"
+    "- conversacional: saludo, agradecimiento o cualquier otra cosa.\n"
+    "Responde solo con esa palabra.\n\nConsulta: {consulta}"
+)
+
+CONVERSACION = (
+    "Eres un asistente de orientación sobre Fonasa y el Registro Social de Hogares en Chile. "
+    "Responde con cortesía en máximo dos oraciones. Si la consulta no es sobre esos temas, "
+    "explica en qué puedes ayudar. No pidas RUT ni datos personales ni inventes cifras.\n\n"
+    "Consulta: {consulta}"
+)
+
+# ponytail: reemplazado por CLASIFICADOR; se retoma como tools en los bloques de agentes (B21–23)
 ENRUTADOR = {
     "system_instruction": (
         "Analiza la consulta del usuario para determinar la herramienta adecuada en el sistema. "

@@ -117,6 +117,13 @@ def registrar_costo(respuesta: dict) -> float:
     return costo
 
 
+def crear_modelo_langchain():
+    """Mismo modelo que la vía REST, pero como Runnable de LangChain (bloques 17–19)."""
+    from langchain_google_genai import ChatGoogleGenerativeAI  # import tardío: las pruebas no lo necesitan
+
+    return ChatGoogleGenerativeAI(model=MODELO, api_key=API_KEY)
+
+
 def consultar_modelo(pregunta: str, system_instruction: str = "", response_schema: dict | None = None) -> str:
     url, body = armar_peticion(pregunta, system_instruction, response_schema)
     try:
