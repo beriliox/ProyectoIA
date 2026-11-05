@@ -18,3 +18,19 @@ REVISAR_ORIENTACION = (
     "sin agregar información nueva. Agrega [VERIFICAR] justo después de cada monto, "
     "porcentaje o tramo que mencione. Entrega solo el texto final:\n\n{borrador}"
 )
+
+# Capa de peticiones: clasificación en una palabra (bloque 19).
+CLASIFICAR_CONSULTA = (
+    "Clasifica la consulta de un ciudadano chileno en una sola palabra:\n"
+    "- normativa: pregunta sobre beneficios, requisitos, tramos o trámites de Fonasa "
+    "o del Registro Social de Hogares.\n"
+    "- conversacional: saludo, agradecimiento o cualquier otra cosa.\n"
+    "Responde solo con esa palabra.\n\nConsulta: {consulta}"
+)
+
+RESPONDER_CONVERSACION = (
+    "Eres un asistente de orientación sobre Fonasa y el Registro Social de Hogares en Chile. "
+    "Responde con cortesía en máximo dos oraciones. Si la consulta no es sobre esos temas, "
+    "explica en qué puedes ayudar. No pidas RUT ni datos personales ni inventes cifras.\n\n"
+    "Consulta: {consulta}"
+)

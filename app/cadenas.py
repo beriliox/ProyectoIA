@@ -20,3 +20,15 @@ def construir_cadena_normativa(modelo):
         | (lambda borrador: {"borrador": borrador})
         | paso(prompts.REVISAR_ORIENTACION, modelo)
     )
+
+
+def normalizar_intencion(texto: str) -> str:
+    return texto.strip().lower().rstrip(".").strip()
+
+
+def construir_clasificador(modelo):
+    return paso(prompts.CLASIFICAR_CONSULTA, modelo) | normalizar_intencion
+
+
+def construir_cadena_conversacional(modelo):
+    return paso(prompts.RESPONDER_CONVERSACION, modelo)
