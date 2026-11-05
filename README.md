@@ -99,6 +99,26 @@ Todos los comandos se ejecutan desde la raíz del repositorio.
 | `python ejemplos/precision.py` | Calcula precisión, recall y F1 por consulta y guarda los resultados en `docs/resultados_metricas.json`. |
 | `python ejemplos/cliente.py` | Envía una petición con reintentos (`con_reintento`) ante límite de uso (429) o errores del servidor (5xx). |
 
+## Asistente social (`app/`)
+
+Aplicación final del programa: orienta sobre Fonasa y el Registro Social de Hogares. Se construye capa por capa a partir de los ejercicios de `ejemplos/`.
+
+| Capa | Archivo | Qué hace | Ejemplo base |
+|---|---|---|---|
+| 1. Integración con el modelo | `app/modelo.py` | Crea el cliente de Gemini (`gemini-3.1-flash-lite`) con `API_KEY`, timeout y reintentos. | `consumir_gemini.py`, `cliente.py` |
+| 2. Cadenas | `app/cadenas.py`, `app/prompts.py` | Orientación normativa en tres pasos (extraer, redactar, revisar con `[VERIFICAR]` en montos y tramos), clasificador y respuesta conversacional. | `cadena_tres_pasos.py` |
+| 3. Peticiones | `app/peticiones.py` | `atender(consulta)`: clasifica en `normativa` o `conversacional` y ejecuta una sola ruta (por defecto, `conversacional`). | `bifurcacion.py`, `enrutamiento.py` |
+| 4. Manejo de errores | `app/peticiones.py` | `with_fallbacks` en cada ruta y `try/except` con `logging` en `atender()`. | `enrutamiento_callback.py` |
+| 5. Entrada | `app/__main__.py` | Consulta por consola. | |
+
+```bash
+python -m app "¿Cómo cambio de tramo en Fonasa?"   # 2 a 4 llamadas a Gemini
+pytest                                             # pruebas de app/, sin llamar al modelo
+pytest ejemplos/tests                              # pruebas de los ejercicios
+```
+
+Imprime un JSON con `consulta`, `intencion` (`normativa`, `conversacional` o `error`) y `respuesta`.
+
 ## Estructura de carpetas
 
 - `ejemplos/` : código fuente.
@@ -116,7 +136,8 @@ Todos los comandos se ejecutan desde la raíz del repositorio.
   - `registro_resultados.json` : resultados de la última corrida de consistencia.
   - `resultados_metricas.json` : métricas de precisión por consulta.
   - `clase_2026-10-27_cliente_y_pruebas.md` : apuntes de la clase sobre cliente y pruebas.
-- `tests/` : pruebas unitarias (`test_cliente.py`, `test_pipeline.py`).
+- `app/` : la aplicación (ver "Asistente social").
+- `tests/` : pruebas de `app/` (las de los ejercicios están en `ejemplos/tests/`).
 - `requirements.txt` : dependencias de Python (`requests`, `python-dotenv`, `google-genai`, `tenacity`, entre otras).
 - `.env.example` : plantilla de variables de entorno (`API_KEY`), sin valores reales.
 - `.gitignore` : excluye el entorno virtual y el archivo `.env`.
