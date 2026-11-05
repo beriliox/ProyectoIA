@@ -75,14 +75,14 @@ Abre `.env` y reemplaza el valor de ejemplo:
 API_KEY=tu_llave_de_gemini
 ```
 
-El código lee esta variable con `python-dotenv` al importar `src/consumir_gemini.py`. El archivo `.env` nunca se sube al repositorio.
+El código lee esta variable con `python-dotenv` al importar `ejemplos/consumir_gemini.py`. El archivo `.env` nunca se sube al repositorio.
 
 ### 5. Verificar que todo funciona
 
 Desde la raíz del repositorio, con el entorno virtual activo:
 
 ```bash
-python src/consumir_gemini.py
+python ejemplos/consumir_gemini.py
 ```
 
 Si la configuración es correcta, verás la latencia, el costo de la petición y una respuesta JSON con las claves `categoria` y `nivel`.
@@ -93,15 +93,15 @@ Todos los comandos se ejecutan desde la raíz del repositorio.
 
 | Comando | Qué hace |
 |---|---|
-| `python src/consumir_gemini.py` | Petición de prueba a Gemini con `response_schema`; imprime latencia, costo y el JSON parseado. |
-| `python src/evaluacion_modelos.py` | Benchmark de 3 modelos Gemini (4 repeticiones c/u): latencia por intento, latencia promedio y costo acumulado. |
-| `python src/consistencia.py` | Ejecuta cada prompt de `src/prompts/banco.py` 3 veces, valida que la respuesta tenga las claves esperadas y guarda el resultado en `docs/registro_resultados.json`. |
-| `python src/precision.py` | Calcula precisión, recall y F1 por consulta y guarda los resultados en `docs/resultados_metricas.json`. |
-| `python src/cliente.py` | Envía una petición con reintentos (`con_reintento`) ante límite de uso (429) o errores del servidor (5xx). |
+| `python ejemplos/consumir_gemini.py` | Petición de prueba a Gemini con `response_schema`; imprime latencia, costo y el JSON parseado. |
+| `python ejemplos/evaluacion_modelos.py` | Benchmark de 3 modelos Gemini (4 repeticiones c/u): latencia por intento, latencia promedio y costo acumulado. |
+| `python ejemplos/consistencia.py` | Ejecuta cada prompt de `ejemplos/prompts/banco.py` 3 veces, valida que la respuesta tenga las claves esperadas y guarda el resultado en `docs/registro_resultados.json`. |
+| `python ejemplos/precision.py` | Calcula precisión, recall y F1 por consulta y guarda los resultados en `docs/resultados_metricas.json`. |
+| `python ejemplos/cliente.py` | Envía una petición con reintentos (`con_reintento`) ante límite de uso (429) o errores del servidor (5xx). |
 
 ## Estructura de carpetas
 
-- `src/` : código fuente.
+- `ejemplos/` : código fuente.
   - `consumir_gemini.py` : cliente HTTP para Gemini (`armar_peticion`, `enviar_peticion`, `extraer_texto`, `calcular_costo`, `parsear_respuesta_json`). Traduce los errores HTTP a excepciones: `ValueError` (401/403), `TimeoutError` (429/5xx), `RuntimeError` (conexión, timeout, otros).
   - `evaluacion_modelos.py` : comparación de latencia y costo entre `gemini-3.6-flash`, `gemini-3.5-flash-lite` y `gemini-3.1-flash-lite`.
   - `consistencia.py` : prueba de consistencia de las respuestas estructuradas (JSON).

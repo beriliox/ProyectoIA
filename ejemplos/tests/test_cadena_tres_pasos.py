@@ -1,7 +1,7 @@
 from langchain_core.messages import AIMessage
 from langchain_core.runnables import RunnableLambda
 
-from src.cadena_tres_pasos import construir_cadena
+from cadena_tres_pasos import construir_cadena
 
 
 def test_cadena_conecta_las_tres_tareas():

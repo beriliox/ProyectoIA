@@ -19,3 +19,6 @@ Thumbs.db
 
 # Logs
 *.log
+
+# Registro de errores de los ejemplos (logging)
+error.log

@@ -2,7 +2,7 @@ from unittest.mock import MagicMock
 
 from langchain_core.runnables import RunnableLambda
 
-from src.enrutamiento import (
+from enrutamiento import (
     construir_cadena_con_enrutamiento,
     construir_cadena_queja_segura,
     procesar_mensaje_seguro,

@@ -3,7 +3,7 @@ import pytest
 from langchain_core.messages import AIMessage
 from langchain_core.runnables import RunnableLambda
 
-from src.enrutamiento import (
+from enrutamiento import (
     construir_paso_clasificacion,
     construir_cadena_con_enrutamiento,
     construir_flujo,
