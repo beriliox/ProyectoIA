@@ -1,12 +1,27 @@
 from dotenv import load_dotenv
+import logging
 import os
 from langchain_google_genai import ChatGoogleGenerativeAI
 from langchain_core.prompts import PromptTemplate
 from langchain_core.output_parsers import StrOutputParser
 from langchain_core.runnables import (
     RunnableBranch,
+    RunnableLambda,
     RunnablePassthrough,
 )
+
+# Los avisos y errores quedan en errores.log (ignorado por git con *.log), no en la consola.
+logging.basicConfig(
+    level=logging.WARNING,
+    format="%(asctime)s - %(levelname)s - %(name)s - %(message)s",
+    datefmt="%Y-%m-%d %H:%M:%S",
+    filename="errores.log",
+    filemode="a",
+    encoding="utf-8",
+    force=True,
+)
+
+logger = logging.getLogger(__name__)
 
 # --- Bloque 1: clasificación de la entrada ---
 plantilla_clasificacion = PromptTemplate.from_template(
@@ -29,19 +44,42 @@ def construir_paso_clasificacion(modelo):
 plantilla_pregunta = PromptTemplate.from_template(
     "Responde esta pregunta de un ciudadano sobre Fonasa o el Registro "
     "Social de Hogares con lenguaje sencillo y precisión. No inventes "
-    "montos ni tramos, y no pidas RUT ni datos personales:\n\n{mensaje}"
+    "montos ni tramos, y no pidas RUT ni datos personales. Responde en un "
+    "solo párrafo:\n\n{mensaje}"
 )
 
 plantilla_queja = PromptTemplate.from_template(
     "Responde a esta queja de un ciudadano con empatía, reconociendo el "
     "problema antes de indicar dónde puede presentar su reclamo. No pidas "
-    "RUT ni datos personales:\n\n{mensaje}"
+    "RUT ni datos personales. Responde en un solo párrafo:\n\n{mensaje}"
 )
 
 plantilla_sugerencia = PromptTemplate.from_template(
     "Agradece esta sugerencia de un ciudadano y explica que será "
-    "considerada para mejorar la orientación del asistente:\n\n{mensaje}"
+    "considerada para mejorar la orientación del asistente. Responde en un "
+    "solo párrafo, sin firmas ni datos para completar:\n\n{mensaje}"
 )
+
+
+# Respaldo de la ruta de queja: no inventa normativa, solo confirma que el reclamo se recibió.
+RESPUESTA_GENERICA = (
+    "Lamentamos el inconveniente. Recibimos tu mensaje y nuestro equipo lo "
+    "revisará. Mientras tanto, puedes presentar tu reclamo en fonasa.cl o en "
+    "la oficina del Registro Social de Hogares de tu municipio."
+)
+
+
+def fallback_con_log(x):
+    # exception_key="error" deja la excepción de la ruta en x["error"], para registrar la causa.
+    logger.warning("La ruta de queja falló, se usa la respuesta de respaldo. Error: %s", x.get("error"))
+    return RESPUESTA_GENERICA
+
+
+respuesta_generica = RunnableLambda(fallback_con_log)
+
+
+def construir_cadena_queja_segura(cadena_queja):
+    return cadena_queja.with_fallbacks([respuesta_generica], exception_key="error")
 
 
 # --- Bloque 3: la bifurcación que las conecta ---
@@ -67,6 +105,17 @@ def construir_cadena_con_enrutamiento(
         | bifurcacion
     )
 
+RESPUESTA_ERROR = "No pudimos procesar tu mensaje en este momento. Intenta de nuevo más tarde."
+
+
+def procesar_mensaje_seguro(cadena, mensaje):
+    try:
+        return cadena.invoke({"mensaje": mensaje})
+    except Exception:
+        # Red de seguridad: cubre fallos fuera de las rutas, como la clasificación.
+        logger.exception("Error procesando mensaje")
+        return RESPUESTA_ERROR
+
 
 if __name__ == "__main__":
     load_dotenv()
@@ -80,19 +129,22 @@ if __name__ == "__main__":
 
     cadena_con_enrutamiento = construir_cadena_con_enrutamiento(
         construir_paso_clasificacion(modelo) | mostrar_clasificacion,
-        cadena_queja=plantilla_queja | modelo | StrOutputParser(),
+        cadena_queja=construir_cadena_queja_segura(plantilla_queja | modelo | StrOutputParser()),
         cadena_sugerencia=plantilla_sugerencia | modelo | StrOutputParser(),
         cadena_pregunta=plantilla_pregunta | modelo | StrOutputParser(),
     )
 
-    print(cadena_con_enrutamiento.invoke(
-        {"mensaje": "¿Qué necesito para actualizar mi Registro Social de Hogares?"}
+    print(procesar_mensaje_seguro(
+        cadena_con_enrutamiento,
+        "¿Qué necesito para actualizar mi Registro Social de Hogares",
     ))
 
-    print(cadena_con_enrutamiento.invoke(
-        {"mensaje": "Llevo semanas esperando que Fonasa actualice mi tramo y nadie me responde."}
+    print(procesar_mensaje_seguro(
+        cadena_con_enrutamiento,
+        "Llevo semanas esperando que Fonasa actualice mi tramo y nadie me responde.",
     ))
 
-    print(cadena_con_enrutamiento.invoke(
-        {"mensaje": "Sería útil que el asistente me recordara los documentos antes de ir a la sucursal."}
+    print(procesar_mensaje_seguro(
+        cadena_con_enrutamiento,
+        "Sería útil que el asistente me recordara los documentos antes de ir a la sucursal.",
     ))
