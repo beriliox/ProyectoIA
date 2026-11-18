@@ -1,0 +1,44 @@
+# Manual del Asistente de Orientación Ciudadana - Fonasa y Registro Social de Hogares
+
+## 1. Actualización del Tramo de Fonasa
+El asistente orienta sobre un único trámite de Fonasa: actualizar el tramo de Fonasa. Este trámite se puede realizar por dos canales:
+- Sucursal virtual en fonasa.cl.
+- Sucursal presencial de Fonasa.
+
+## 2. Actualización del Registro Social de Hogares
+El asistente orienta sobre la actualización de los datos del Registro Social de Hogares. Este trámite se puede realizar por dos canales:
+- Sitio web registrosocial.gob.cl.
+- Oficina del Registro Social de Hogares del municipio.
+
+## 3. Cálculo del Ingreso por Integrante
+El asistente calcula el ingreso mensual promedio por integrante dividiendo el ingreso total del hogar por la cantidad de integrantes.
+- Ambos valores deben ser mayores que cero.
+- El cálculo es solo referencial: no asigna tramos de Fonasa ni calificaciones del Registro Social de Hogares.
+
+## 4. Notas sobre el Grupo Familiar
+El asistente puede guardar una nota breve sobre el grupo familiar, una por tema: domicilio, integrantes, ingresos, documentos u otro. Guardar una nota no requiere aprobación.
+- Para corregir una nota, se guarda otra del mismo tema, que reemplaza a la anterior.
+- La nota no puede contener RUT ni datos personales.
+
+## 5. Solicitudes de Actualización del Registro Social de Hogares
+En esta versión, el envío de una solicitud de actualización del Registro Social de Hogares es solo una simulación. Los motivos admitidos son:
+- Cambio de domicilio.
+- Ingreso o salida de un integrante del hogar.
+- Cambio en los ingresos del hogar.
+Cada envío requiere aprobación humana en consola, respondiendo s o n dentro de 30 segundos. Sin respuesta, la solicitud no se aprueba. El mismo motivo no se envía dos veces en una misma ejecución.
+
+## 6. Privacidad y Registro de Interacciones
+El asistente solo orienta sobre Fonasa y el Registro Social de Hogares.
+- No pide RUT ni datos personales.
+- No inventa trámites, montos ni tramos.
+- Cada interacción queda registrada en una traza con las herramientas usadas, sus argumentos y las aprobaciones del turno.
+
+## 7. Reintentos ante Fallas del Servicio
+Cuando el servicio del modelo no responde a tiempo, el asistente reintenta hasta 3 veces con espera creciente:
+- Primer reintento: espera de 2 segundos.
+- Segundo reintento: espera de 4 segundos.
+- La espera nunca supera los 30 segundos e incluye una pequeña variación aleatoria.
+Si se agotan los intentos, el asistente informa que el servicio no respondió y que se intente más tarde.
+
+## 8. Costo de las Consultas al Modelo
+El costo de cada consulta al modelo se estima a partir de la cantidad total de tokens usados, con una tarifa referencial de 0,002 dólares por cada 1000 tokens. El costo se acumula en el total de la sesión mientras el asistente sigue en ejecución.
