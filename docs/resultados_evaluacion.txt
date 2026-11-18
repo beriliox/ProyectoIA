@@ -1,0 +1,17 @@
+Fecha: 2026-11-17 15:07
+Configuracion: k=3, chunk_size=300, chunk_overlap=45, coleccion=asistente_social
+
+0.33  1.00  0.50  ¿Dónde actualizo mi tramo de Fonasa? -> ['doc_1', 'doc_4', 'doc_2']
+0.33  1.00  0.50  ¿En qué sitio actualizo los datos de mi hogar en el registro social? -> ['doc_2', 'doc_7', 'doc_0']
+0.33  1.00  0.50  Somos cinco en la casa, ¿cómo se saca lo que gana cada uno? -> ['doc_3', 'doc_4', 'doc_7']
+0.67  0.67  0.67  ¿El asistente me dice en qué tramo quedo? -> ['doc_1', 'doc_10', 'doc_9']
+0.33  1.00  0.50  ¿Puedo corregir algo que anoté sobre mi familia? -> ['doc_5', 'doc_7', 'doc_6']
+0.67  1.00  0.80  ¿Puedo poner mi RUT en una nota? -> ['doc_6', 'doc_5', 'doc_9']
+0.67  1.00  0.80  ¿Por qué motivos puedo pedir que actualicen mi registro social? -> ['doc_7', 'doc_2', 'doc_8']
+0.33  1.00  0.50  ¿Quién tiene que autorizar el envío de una solicitud? -> ['doc_8', 'doc_7', 'doc_6']
+0.33  1.00  0.50  ¿Puedo mandar dos veces la misma solicitud? -> ['doc_8', 'doc_12', 'doc_7']
+0.67  1.00  0.80  ¿Qué pasa si el servicio se demora en contestar? -> ['doc_12', 'doc_11', 'doc_8']
+0.33  1.00  0.50  ¿Cuánto cuesta cada consulta al modelo? -> ['doc_13', 'doc_11', 'doc_4']
+0.33  1.00  0.50  ¿Queda registro de lo que pregunto? -> ['doc_9', 'doc_10', 'doc_6']
+
+promedio -> precision: 0.444  recall: 0.972
